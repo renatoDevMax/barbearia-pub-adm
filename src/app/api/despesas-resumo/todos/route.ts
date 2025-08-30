@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import Despesa from '@/models/Despesa';
 import Funcionario from '@/models/Funcionario';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     // Conectar ao MongoDB
     if (mongoose.connection.readyState !== 1) {
@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
         // Filtrar despesas (mesma lógica da página de despesas)
         const despesasPeriodicas = todasDespesas.filter(despesa => despesa.recorrencia === 'periodica');
         const despesasIndividuais = todasDespesas.filter(despesa => 
-          despesa.recorrencia === 'individual' && isMesAtual(despesa.data)
+          despesa.recorrencia === 'individual' && isMesAtual(despesa.data as string)
         );
 
         // Buscar funcionários para calcular total de salários
@@ -54,9 +54,9 @@ export async function GET(request: NextRequest) {
           .lean();
 
         // Somar valores desta barbearia
-        const salariosBarbearia = funcionarios.reduce((total, funcionario) => total + funcionario.salarioBruto, 0);
-        const periodicasBarbearia = despesasPeriodicas.reduce((total, despesa) => total + despesa.valor, 0);
-        const individuaisBarbearia = despesasIndividuais.reduce((total, despesa) => total + despesa.valor, 0);
+        const salariosBarbearia = funcionarios.reduce((total, funcionario) => total + (funcionario.salarioBruto as number), 0);
+        const periodicasBarbearia = despesasPeriodicas.reduce((total, despesa) => total + (despesa.valor as number), 0);
+        const individuaisBarbearia = despesasIndividuais.reduce((total, despesa) => total + (despesa.valor as number), 0);
 
         // Adicionar aos totais gerais
         totalSalarios += salariosBarbearia;

@@ -77,8 +77,8 @@ export async function GET(
     let totalCortesMensais = 0;
 
     cortesReceita.forEach(corte => {
-      const valor = calcularValorServico(corte.service);
-      const dataCorte = new Date(corte.data);
+      const valor = calcularValorServico(corte.service as string);
+      const dataCorte = new Date(corte.data as string);
 
       if (isDataNoPeriodo(dataCorte, 'dia')) {
         receitaDiaria += valor;
@@ -105,8 +105,8 @@ export async function GET(
     let totalAgendadosMensais = 0;
 
     cortesExpectativa.forEach(corte => {
-      const valor = calcularValorServico(corte.service);
-      const dataCorte = new Date(corte.data);
+      const valor = calcularValorServico(corte.service as string);
+      const dataCorte = new Date(corte.data as string);
 
       if (isDataNoPeriodo(dataCorte, 'dia')) {
         expectativaDiaria += valor;

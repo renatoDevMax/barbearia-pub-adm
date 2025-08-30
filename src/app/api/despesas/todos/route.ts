@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import Despesa from '@/models/Despesa';
 import Funcionario from '@/models/Funcionario';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     // Conectar ao MongoDB
     if (mongoose.connection.readyState !== 1) {
@@ -61,7 +61,7 @@ export async function GET(request: NextRequest) {
             barbearia: `Barbearia ${i.toString().padStart(2, '0')}`,
             barbeariaNumero: i
           });
-          totalSalarios += funcionario.salarioBruto;
+          totalSalarios += funcionario.salarioBruto as number;
         });
 
       } catch (error) {

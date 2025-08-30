@@ -53,8 +53,8 @@ export async function GET(
 
     // Somar receitas dos cortes
     cortes.forEach(corte => {
-      const dataFormatada = formatarData(corte.data);
-      const valor = calcularValorServico(corte.service);
+      const dataFormatada = formatarData(corte.data as string);
+      const valor = calcularValorServico(corte.service as string);
       receitasPorDia[dataFormatada] += valor;
     });
 

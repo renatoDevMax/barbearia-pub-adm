@@ -36,7 +36,7 @@ export async function GET(
     // Filtrar despesas (mesma lógica da página de despesas)
     const despesasPeriodicas = todasDespesas.filter(despesa => despesa.recorrencia === 'periodica');
     const despesasIndividuais = todasDespesas.filter(despesa => 
-      despesa.recorrencia === 'individual' && isMesAtual(despesa.data)
+      despesa.recorrencia === 'individual' && isMesAtual(despesa.data as string)
     );
 
     // Buscar funcionários para calcular total de salários
@@ -45,9 +45,9 @@ export async function GET(
       .select('nome salarioBruto')
       .lean();
 
-    const totalSalarios = funcionarios.reduce((total, funcionario) => total + funcionario.salarioBruto, 0);
-    const totalPeriodicas = despesasPeriodicas.reduce((total, despesa) => total + despesa.valor, 0);
-    const totalIndividuais = despesasIndividuais.reduce((total, despesa) => total + despesa.valor, 0);
+    const totalSalarios = funcionarios.reduce((total, funcionario) => total + (funcionario.salarioBruto as number), 0);
+    const totalPeriodicas = despesasPeriodicas.reduce((total, despesa) => total + (despesa.valor as number), 0);
+    const totalIndividuais = despesasIndividuais.reduce((total, despesa) => total + (despesa.valor as number), 0);
     const totalMensal = totalPeriodicas + totalIndividuais + totalSalarios;
 
     // Calcular custo diário médio

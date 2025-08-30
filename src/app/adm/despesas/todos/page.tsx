@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { FaArrowLeft, FaMoneyBillWave, FaCalendarAlt, FaBars, FaPlus, FaTimes, FaSave, FaTrash, FaSync, FaUserTie } from 'react-icons/fa';
+import { FaArrowLeft, FaMoneyBillWave, FaCalendarAlt, FaSync, FaUserTie } from 'react-icons/fa';
 
 interface Despesa {
   _id: string;
@@ -108,7 +108,8 @@ export default function DespesasTodasPage() {
         recorrencia: 'periodica' as const,
         data: new Date().toISOString(),
         isSalarios: true,
-        barbearia: 'Todas as Barbearias'
+        barbearia: 'Todas as Barbearias',
+        barbeariaNumero: 0
       };
     }
     return null;
@@ -133,16 +134,7 @@ export default function DespesasTodasPage() {
     return cores[(numero - 1) % cores.length];
   };
 
-  const getBgBarbearia = (numero: number) => {
-    const cores = [
-      'bg-red-500/10 border-red-400/20',
-      'bg-blue-500/10 border-blue-400/20',
-      'bg-green-500/10 border-green-400/20', 
-      'bg-yellow-500/10 border-yellow-400/20',
-      'bg-purple-500/10 border-purple-400/20'
-    ];
-    return cores[(numero - 1) % cores.length];
-  };
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black p-4">
@@ -194,7 +186,7 @@ export default function DespesasTodasPage() {
                 {(() => {
                   const { despesasPeriodicas, despesasIndividuais } = filtrarDespesas();
                   const despesaSalarios = criarDespesaSalarios();
-                  const todasPeriodicas = despesaSalarios ? [despesaSalarios, ...despesasPeriodicas] : despesasPeriodicas;
+
                   
                   return (
                     <div className="space-y-4">
@@ -254,34 +246,34 @@ export default function DespesasTodasPage() {
                 {(() => {
                   const { despesasPeriodicas, despesasIndividuais } = filtrarDespesas();
                   const despesaSalarios = criarDespesaSalarios();
-                  const todasPeriodicas = despesaSalarios ? [despesaSalarios, ...despesasPeriodicas] : despesasPeriodicas;
+
                   
                   return (
                     <>
                       {/* Despesas Periódicas */}
-                      {todasPeriodicas.length > 0 && (
+                      {(despesasPeriodicas.length + (totalSalarios > 0 ? 1 : 0)) > 0 && (
                         <div>
                           <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
                             <FaSync className="text-orange-400" />
                             Despesas Periódicas
                             <span className="text-orange-400 text-sm font-normal">
-                              ({todasPeriodicas.length})
+                              ({despesasPeriodicas.length + (totalSalarios > 0 ? 1 : 0)})
                             </span>
                           </h3>
                           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                            {todasPeriodicas.map((despesa) => (
+                            {(despesaSalarios ? [despesaSalarios, ...despesasPeriodicas] : despesasPeriodicas).map((despesa) => (
                               <div
                                 key={despesa._id}
-                                className={`bg-white/5 rounded-lg p-4 border hover:bg-white/10 transition-all duration-300 ${
-                                  (despesa as any).isSalarios 
-                                    ? 'border-green-400/20' 
-                                    : 'border-orange-400/20'
-                                }`}
+                                                                 className={`bg-white/5 rounded-lg p-4 border hover:bg-white/10 transition-all duration-300 ${
+                                   (despesa as Despesa & { isSalarios?: boolean }).isSalarios 
+                                     ? 'border-green-400/20' 
+                                     : 'border-orange-400/20'
+                                 }`}
                               >
                                 <div className="flex items-start justify-between mb-3">
                                   <div className="flex items-center gap-3">
                                     <FaMoneyBillWave className={`text-2xl ${
-                                      (despesa as any).isSalarios 
+                                      (despesa as Despesa & { isSalarios?: boolean }).isSalarios 
                                         ? 'text-green-400' 
                                         : 'text-orange-400'
                                     }`} />
@@ -290,7 +282,7 @@ export default function DespesasTodasPage() {
                                         {despesa.nome}
                                       </h3>
                                       <p className={`text-sm font-medium ${
-                                        (despesa as any).isSalarios 
+                                        (despesa as Despesa & { isSalarios?: boolean }).isSalarios 
                                           ? 'text-green-400' 
                                           : getCorBarbearia(despesa.barbeariaNumero)
                                       }`}>
@@ -305,7 +297,7 @@ export default function DespesasTodasPage() {
                                   <div className="flex items-center gap-2">
                                     <span className="text-gray-300 text-sm">Valor:</span>
                                     <span className={`font-bold text-lg ${
-                                      (despesa as any).isSalarios 
+                                      (despesa as Despesa & { isSalarios?: boolean }).isSalarios 
                                         ? 'text-green-400' 
                                         : 'text-orange-400'
                                     }`}>

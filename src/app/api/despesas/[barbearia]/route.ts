@@ -30,7 +30,7 @@ export async function GET(
       .select('nome salarioBruto')
       .lean();
 
-    const totalSalarios = funcionarios.reduce((total, funcionario) => total + funcionario.salarioBruto, 0);
+    const totalSalarios = funcionarios.reduce((total, funcionario) => total + (funcionario.salarioBruto as number), 0);
 
     console.log(`Encontradas ${despesas.length} despesas e ${funcionarios.length} funcionários`);
 

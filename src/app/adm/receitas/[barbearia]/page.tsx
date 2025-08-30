@@ -205,23 +205,23 @@ export default function ReceitasPage() {
       {
         label: mostrarLucroLiquido ? 'Lucro Líquido Diário' : 'Receita Diária',
         data: mostrarLucroLiquido && despesasResumo 
-          ? graficoData.dados.map(valor => valor - despesasResumo.custoDiario)
+          ? graficoData.dados.map((valor: number) => valor - despesasResumo.custoDiario)
           : graficoData.dados,
         borderColor: mostrarLucroLiquido && despesasResumo 
-          ? graficoData.dados.map(valor => {
+          ? graficoData.dados.map((valor: number) => {
               const lucro = valor - despesasResumo.custoDiario;
               return lucro >= 0 ? '#10b981' : '#ef4444';
             })
           : '#10b981',
         backgroundColor: mostrarLucroLiquido && despesasResumo 
-          ? graficoData.dados.map(valor => {
+          ? graficoData.dados.map((valor: number) => {
               const lucro = valor - despesasResumo.custoDiario;
               return lucro >= 0 ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)';
             })
           : 'rgba(16, 185, 129, 0.1)',
         borderWidth: 2,
         pointBackgroundColor: mostrarLucroLiquido && despesasResumo 
-          ? graficoData.dados.map(valor => {
+          ? graficoData.dados.map((valor: number) => {
               const lucro = valor - despesasResumo.custoDiario;
               return lucro >= 0 ? '#10b981' : '#ef4444';
             })

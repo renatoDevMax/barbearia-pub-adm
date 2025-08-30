@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import mongoose from 'mongoose';
 import Corte from '@/models/Corte';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     // Conectar ao MongoDB
     if (mongoose.connection.readyState !== 1) {
@@ -57,8 +57,8 @@ export async function GET(request: NextRequest) {
 
         // Somar receitas dos cortes desta barbearia
         cortes.forEach(corte => {
-          const dataFormatada = formatarData(corte.data);
-          const valor = calcularValorServico(corte.service);
+          const dataFormatada = formatarData(corte.data as string);
+          const valor = calcularValorServico(corte.service as string);
           receitasPorDia[dataFormatada] += valor;
           totalCortes++;
         });

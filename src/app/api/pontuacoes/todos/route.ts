@@ -30,7 +30,7 @@ export async function GET() {
           const pontuacoes: { [key: string]: number } = {};
           
           cortes.forEach(corte => {
-            const nome = corte.nome;
+            const nome = corte.nome as string;
             if (pontuacoes[nome]) {
               pontuacoes[nome]++;
             } else {

@@ -1,7 +1,7 @@
 declare global {
   var mongoose: {
-    conn: any;
-    promise: any;
+    conn: unknown;
+    promise: Promise<unknown>;
   };
 }
 

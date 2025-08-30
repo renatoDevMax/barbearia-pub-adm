@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import mongoose from 'mongoose';
 import Corte from '@/models/Corte';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     // Conectar ao MongoDB
     if (mongoose.connection.readyState !== 1) {
@@ -76,17 +76,17 @@ export async function GET(request: NextRequest) {
 
         // Processar receitas reais
         cortesReceita.forEach(corte => {
-          const valor = calcularValorServico(corte.service);
+          const valor = calcularValorServico(corte.service as string);
           
-          if (isDataNoPeriodo(corte.data, 'dia')) {
+          if (isDataNoPeriodo(corte.data as string, 'dia')) {
             receitaDiaria += valor;
             totalCortesDiarios++;
           }
-          if (isDataNoPeriodo(corte.data, 'semana')) {
+          if (isDataNoPeriodo(corte.data as string, 'semana')) {
             receitaSemanal += valor;
             totalCortesSemanais++;
           }
-          if (isDataNoPeriodo(corte.data, 'mes')) {
+          if (isDataNoPeriodo(corte.data as string, 'mes')) {
             receitaMensal += valor;
             totalCortesMensais++;
           }
@@ -94,17 +94,17 @@ export async function GET(request: NextRequest) {
 
         // Processar expectativas
         cortesExpectativa.forEach(corte => {
-          const valor = calcularValorServico(corte.service);
+          const valor = calcularValorServico(corte.service as string);
           
-          if (isDataNoPeriodo(corte.data, 'dia')) {
+          if (isDataNoPeriodo(corte.data as string, 'dia')) {
             expectativaDiaria += valor;
             totalAgendadosDiarios++;
           }
-          if (isDataNoPeriodo(corte.data, 'semana')) {
+          if (isDataNoPeriodo(corte.data as string, 'semana')) {
             expectativaSemanal += valor;
             totalAgendadosSemanais++;
           }
-          if (isDataNoPeriodo(corte.data, 'mes')) {
+          if (isDataNoPeriodo(corte.data as string, 'mes')) {
             expectativaMensal += valor;
             totalAgendadosMensais++;
           }

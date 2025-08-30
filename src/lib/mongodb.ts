@@ -9,7 +9,7 @@ if (!MONGODB_URI) {
 let cached = global.mongoose;
 
 if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
+  cached = global.mongoose = { conn: null, promise: null as any };
 }
 
 async function connectDB() {
@@ -34,7 +34,7 @@ async function connectDB() {
   try {
     cached.conn = await cached.promise;
   } catch (e) {
-    cached.promise = null;
+    cached.promise = null as any;
     console.error('Erro na conexão com MongoDB:', e);
     throw e;
   }
