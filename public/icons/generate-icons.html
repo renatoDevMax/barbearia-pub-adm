@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Ícones PWA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .icon-preview {
+            display: inline-block;
+            margin: 10px;
+            text-align: center;
+        }
+        canvas {
+            border: 1px solid #ccc;
+            margin: 5px;
+        }
+        button {
+            background: #000;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Gerador de Ícones PWA - Barbearia Admin</h1>
+    <p>Clique nos botões abaixo para gerar e baixar os ícones em diferentes tamanhos:</p>
+    
+    <div id="iconContainer"></div>
+    
+    <script>
+        const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+        const container = document.getElementById('iconContainer');
+        
+        sizes.forEach(size => {
+            const div = document.createElement('div');
+            div.className = 'icon-preview';
+            
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            
+            // Desenhar o ícone
+            const cornerRadius = size * 0.125; // 12.5% do tamanho
+            const innerMargin = size * 0.125; // 12.5% do tamanho
+            
+            // Fundo preto com bordas arredondadas
+            ctx.fillStyle = '#000000';
+            ctx.beginPath();
+            ctx.roundRect(0, 0, size, size, cornerRadius);
+            ctx.fill();
+            
+            // Fundo branco interno
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.roundRect(innerMargin, innerMargin, size - 2*innerMargin, size - 2*innerMargin, cornerRadius/2);
+            ctx.fill();
+            
+            // Desenhar elementos do ícone (representando uma interface administrativa)
+            ctx.fillStyle = '#000000';
+            
+            // Círculos representando botões/ícones
+            const circleSize = size * 0.05;
+            const circleSpacing = size * 0.08;
+            const startY = size * 0.3;
+            
+            for (let i = 0; i < 4; i++) {
+                ctx.beginPath();
+                ctx.arc(size * 0.25 + i * circleSpacing, startY, circleSize, 0, 2 * Math.PI);
+                ctx.fill();
+            }
+            
+            // Linhas representando texto/conteúdo
+            const lineHeight = size * 0.02;
+            const lineSpacing = size * 0.08;
+            const startX = size * 0.2;
+            const lineStartY = size * 0.5;
+            
+            for (let i = 0; i < 3; i++) {
+                const lineWidth = i === 2 ? size * 0.4 : size * 0.6;
+                ctx.fillRect(startX, lineStartY + i * lineSpacing, lineWidth, lineHeight);
+            }
+            
+            div.appendChild(canvas);
+            
+            const button = document.createElement('button');
+            button.textContent = `Baixar ${size}x${size}`;
+            button.onclick = () => {
+                const link = document.createElement('a');
+                link.download = `icon-${size}x${size}.png`;
+                link.href = canvas.toDataURL();
+                link.click();
+            };
+            
+            div.appendChild(button);
+            div.appendChild(document.createElement('br'));
+            div.appendChild(document.createTextNode(`${size}x${size}px`));
+            
+            container.appendChild(div);
+        });
+    </script>
+</body>
+</html>
